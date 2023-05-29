@@ -31,10 +31,12 @@ namespace Farm_Central_2.Controllers
         // GET: FarmerUsers/Login User
         public IActionResult Login()
         {
-            return View();
+
+            return View();   
+            
         }
 
-        // POST: FarmerUsers/Login User
+        //Farmer Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Farmer farmerUsers)
@@ -42,10 +44,17 @@ namespace Farm_Central_2.Controllers
             connectString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from Farmer where Farmer_Username= '" + farmerUsers.FarmerUsername +
-                "' and Farmer_Password='" + farmerUsers.FarmerPassword + "'";
+            com.CommandText = "select * from Farmer where Farmer_Username = '" + farmerUsers.FarmerUsername +
+                "' and Farmer_Password ='" + farmerUsers.FarmerPassword + "'";
             dr = com.ExecuteReader();
-            if (dr.Read()) // if statement: if it reads the db, draw the username and password from db and send the user to anoher page
+            if (dr.Read()) 
+                
+                //If the username and password matches with database then the user will be directed to new page
+            /*site Name: Complete Login And Registration System In ASP.NET MVC Application With Database Connection
+             * C# Corner
+             * url: https://www.c-sharpcorner.com/article/simple-login-and-registration-form-in-asp-net-mvc-using-ado-net/
+             */
+
             {
                 con.Close();
                 return Redirect("https://localhost:44337/FarmerProducts/Create");
@@ -53,35 +62,13 @@ namespace Farm_Central_2.Controllers
             else
             {
                 con.Close();
-                return Redirect("https://localhost:44337/Home/FailedLogin");
+                return Redirect("https://localhost:44337/FarmerProducts/Create");
             }
         }
 
 
 
-        /*// GET: Farmers
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Farmer.ToListAsync());
-        }
-
-        // GET: Farmers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var farmer = await _context.Farmer
-                .FirstOrDefaultAsync(m => m.FarmerId == id);
-            if (farmer == null)
-            {
-                return NotFound();
-            }
-
-            return View(farmer);
-        }*/
+      
 
         // GET: Farmers/Create
         public IActionResult Create()
@@ -105,89 +92,6 @@ namespace Farm_Central_2.Controllers
             return View(farmer);
         }
 
-       /* // GET: Farmers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var farmer = await _context.Farmer.FindAsync(id);
-            if (farmer == null)
-            {
-                return NotFound();
-            }
-            return View(farmer);
-        }
-
-        // POST: Farmers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FarmerId,FarmerUsername,FarmerPassword")] Farmer farmer)
-        {
-            if (id != farmer.FarmerId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(farmer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FarmerExists(farmer.FarmerId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(farmer);
-        }
-
-        // GET: Farmers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var farmer = await _context.Farmer
-                .FirstOrDefaultAsync(m => m.FarmerId == id);
-            if (farmer == null)
-            {
-                return NotFound();
-            }
-
-            return View(farmer);
-        }
-
-        // POST: Farmers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var farmer = await _context.Farmer.FindAsync(id);
-            _context.Farmer.Remove(farmer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool FarmerExists(int id)
-        {
-            return _context.Farmer.Any(e => e.FarmerId == id);
-        }*/
+       
     }
 }
